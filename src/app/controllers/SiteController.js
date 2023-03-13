@@ -20,7 +20,6 @@ class SiteController {
                 })
             })
             .catch(next);
-        // res.render('home');
     }
 
 
