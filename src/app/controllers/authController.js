@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Course = require('../models/Course');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -128,6 +129,35 @@ const autherController = {
         res.clearCookie("refreshToken");
         refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken);
         res.status(200).json("User logout success!")
+    },
+
+    //newUserCourse test 
+    newUserCourse: async (req, res, next) => {
+        //Tim id cua user de tao duong dan localhost../id
+        const { userId } = req.params
+
+        //Tao khoa hoc moi
+        const newCourse = new Course(req.body)
+        console.log('1 ', newCourse)
+        //Get user
+        const user = await User.findById(userId)
+        console.log('user: ', user)
+        //Asign user as a courses owner
+        newCourse.owner = user
+
+        //Save the course
+        await newCourse.save()
+        console.log('2 ', newCourse)
+
+        //add course to users array 'courses'
+        user.courses.push(newCourse._id)
+
+        //save use
+        await user.save()
+
+
+        return res.status(201).json({ course: newCourse })
+
     }
 };
 

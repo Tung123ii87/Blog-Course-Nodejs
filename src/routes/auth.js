@@ -18,4 +18,6 @@ router.post("/refresh", autherController.requestRefreshToken);
 //Logout
 router.post("/logout", middlewareController.verifyToken, autherController.userLogout);
 
+//test
+router.post("/:userId/courses", autherController.newUserCourse);
 module.exports = router;
